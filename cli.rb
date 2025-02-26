@@ -6,14 +6,24 @@ class ClientProcessor
     @clients = JSON.parse(file)
   end
 
-  def search(query)
+  def search(query, field="full_name")
     results = @clients.filter do |client|
-      client["full_name"].downcase.include?(query.downcase)
+      client[field].downcase.include?(query.downcase)
     end
     print_results(results)
   end
 
   def duplicates
+    clients_by_email = @clients.each_with_object({}) do |client, acc|
+      acc[client["email"]] ||= []
+      acc[client["email"]].push(client)
+    end
+
+    results = clients_by_email.values.filter do |clients|
+      clients.size > 1
+    end
+
+    print_results(results)
   end
 
   private
@@ -23,8 +33,6 @@ class ClientProcessor
   end
 end
 
-
-
 client_processor = ClientProcessor.new('clients.json')
 command = ARGV[0]
 
@@ -33,11 +41,6 @@ when 'search'
   client_processor.search(ARGV[1])
 when 'duplicates'
   client_processor.duplicates
-when 'help'
-  puts "Usage: ruby cli.rb <command> <argument>"
-  puts "Commands:"
-  puts "  search <query>: Search clients by name"
-  puts "  duplicates: Find duplicate emails"
 else
   puts "Unknown command: #{command}"
 end
