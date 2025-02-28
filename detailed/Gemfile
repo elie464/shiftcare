@@ -1,0 +1,21 @@
+source "https://rubygems.org"
+
+ruby "3.0.2"
+
+gem "rails", "~> 7.1.5", ">= 7.1.5.1"
+gem "sqlite3", ">= 1.4"
+gem "bootsnap", require: false
+gem "puma"
+
+group :development, :test do
+  gem "byebug"
+end
+
+group :test do
+  gem "minitest"
+  gem "minitest-bang"
+  gem "minitest-spec-rails"
+  gem "mocha"
+  gem "rspec-expectations"
+  gem "webmock"
+end
