@@ -13,9 +13,5 @@ end
 
 group :test do
   gem "minitest"
-  gem "minitest-bang"
   gem "minitest-spec-rails"
-  gem "mocha"
-  gem "rspec-expectations"
-  gem "webmock"
 end
